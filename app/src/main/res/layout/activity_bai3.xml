@@ -22,8 +22,21 @@
         android:layout_height="wrap_content"
         android:text="Xem Danh Bạ" />
 
+    <Button
+        android:id="@+id/btnXemLichSu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="xem lịch sử" />
+
+    <Button
+        android:id="@+id/btnXemHistoryWeb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="history web" />
+
     <ListView
         android:id="@+id/lvContact"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>
