@@ -2,10 +2,13 @@ package com.example.androidd_nangg_caoo_ca1_fall;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.androidd_nangg_caoo_ca1_fall.dto.NewAdapter;
@@ -32,13 +35,24 @@ public class Bai5Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bai5);
+        adapter = new NewAdapter(getBaseContext(), news);
         lvNews = findViewById(R.id.lvNews);
+        lvNews.setAdapter(adapter);
         String urlSite = ("https://vnexpress.net/rss/tam-su.rss");
         new FeedService().execute(urlSite);
+        lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                News currentItem = news.get(position);
+                if(currentItem != null) {
+                    Intent intent = new Intent(Bai5Activity.this, WebViewActivity.class);
+                    intent.putExtra("link", currentItem.getLink());
+                    System.out.println(currentItem.getLink());
+                    startActivity(intent);
+                }
 
-        adapter = new NewAdapter(getBaseContext(), news);
-        lvNews.setAdapter(adapter);
-
+            }
+        });
 
     }
     public List<News> parseFeed(URL url) throws IOException, XmlPullParserException {
@@ -88,26 +102,31 @@ public class Bai5Activity extends AppCompatActivity {
         return list;
     }
 
-    class FeedService extends AsyncTask<String, Integer, Integer> {
+    class FeedService extends AsyncTask<String,  Integer, List<News>> {
 
         @Override
-        protected Integer doInBackground(String... strings) {
+        protected List<News> doInBackground(String... strings) {
+            List<News> test = new ArrayList<>();
             try {
                 feedURL = new URL(strings[0]);
-                news = parseFeed(new URL("https://vnexpress.net/rss/tam-su.rss"));
+                test = parseFeed(new URL("https://vnexpress.net/rss/tam-su.rss"));
                 Log.i("TEST", news.size()+"");
             } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
 
-            return 0;
+            return test;
         }
 
         @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            System.out.println("SUCCESSS");
-            adapter.notifyDataSetChanged();
+        protected void onPostExecute(List<News> results) {
+            for (News item:results
+                 ) {
+                System.out.println(item);
+            }
+            news= results;
+            super.onPostExecute(results);
+            adapter.forceUpdate(results);
         }
     }
 }

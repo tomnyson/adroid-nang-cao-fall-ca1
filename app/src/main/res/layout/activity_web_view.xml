@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Bai5Activity">
+    tools:context=".WebViewActivity">
 
-    <ListView
-        android:id="@+id/lvNews"
+    <WebView
+        android:id="@+id/webBrowser"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

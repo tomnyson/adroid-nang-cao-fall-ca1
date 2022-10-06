@@ -43,15 +43,16 @@ public class NewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-      if(convertView == null) {
           convertView = LayoutInflater.from(context).inflate(R.layout.listview_item, null);
-      } else {
           News current = news.get(position);
           TextView txtTitle = convertView.findViewById(R.id.txtTitle);
           TextView txtDes = convertView.findViewById(R.id.txtDes);
           txtTitle.setText(current.getTitle());
           txtDes.setText(current.getDescription());
-      }
-      return  convertView;
+          return  convertView;
+    }
+    public void forceUpdate(List<News> results) {
+        this.news = results;
+        notifyDataSetChanged();
     }
 }
